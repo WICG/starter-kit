@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-
-const program = require('commander');
-const chalk = require('chalk');
-const path = require('path');
-const async = require('marcosc-async');
-const fs = require('fs-promise');
+"use strict";
+const program = require("commander");
+const chalk = require("chalk");
+const path = require("path");
+const async = require("marcosc-async");
+const fs = require("fs-promise");
 
 // Templates
 const tmplDir = __dirname + "/templates/";
@@ -16,17 +16,27 @@ const init = async(function*() {
       from: tmplDir + filename,
       to: `${process.cwd()}/${filename}`
     }));
-  for (let { from, to }
-    of destinations) {
-    const data = yield fs.readFile(from, 'utf8');
+  for (let { from, to } of destinations) {
+    const stats = yield fs.lstat(to);
+    if (stats.isFile()) {
+      console.warn("Skipping:", path.basename(to));
+      continue;
+    }
+    const data = yield fs.readFile(from, "utf8");
     yield fs.writeFile(to, data);
   }
 });
 
+const readVersionNumber = async(function*() {
+  var data = yield fs.readFile(__dirname + "/package.json");
+  return JSON.parse(data).version;
+});
 
-program
-  .option('-i, init [project-name]', 'start a new incubation project', (name) => {
-    console.log("name>",name)
-    init().catch(err => console.error(err))
-  })
-  .parse(process.argv);
+readVersionNumber().then((version) => {
+  program
+    .version(version)
+    .option("-i, init", "start a new incubation project", () => {
+      init().catch(err => console.error(err));
+    })
+    .parse(process.argv);
+});
