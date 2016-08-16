@@ -17,8 +17,8 @@ const init = async(function*() {
       to: `${process.cwd()}/${filename}`
     }));
   for (let { from, to } of destinations) {
-    const stats = yield fs.lstat(to);
-    if (stats.isFile()) {
+    const exists = yield fs.exists(to);
+    if (exists) {
       console.warn("Skipping:", path.basename(to));
       continue;
     }
