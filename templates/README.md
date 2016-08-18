@@ -1,5 +1,4 @@
 
-# Specification '{{repo}}'
+# {{name}}
 
-This is the repository for {{repo}}. You're welcome to contribute! Let's make the Web rock our socks
-off!
+This is the repository for {{name}}. You're welcome to contribute!
