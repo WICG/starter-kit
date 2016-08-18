@@ -1,6 +1,6 @@
 {
   "name": "wicg",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "Tools to get you started with the WICG",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
