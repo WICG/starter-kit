@@ -159,12 +159,13 @@ readVersionNumber().then((version) => {
   if (!process.argv.slice(2).length) {
     program.outputHelp();
     console.log(`
-  Tool to help you get set up for writing WICG specs.
-  More info at: https://wicg.io | bugs: https://github.com/WICG/starter-kit
+ℹ️ A tool that sets you up for writing WICG specs.
 
   Example:
 
     wicg init "My Awesome API"
+
+  More info at: ${b("https://wicg.io")} | bugs: ${b("https://github.com/WICG/starter-kit")}
     `)
   }
 });
