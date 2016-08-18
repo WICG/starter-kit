@@ -53,6 +53,21 @@ const Prompts = {
     };
     return this.askQuestion(promptOps);
   },
+  askUserName() {
+    return async.task(function*() {
+      let gitUser;
+      try {
+        gitUser = yield git("config user.name");
+      } catch (err) {
+        gitUser = "";
+      }
+      const promptOps = {
+        description: "Who edits the spec (using your git user name)?",
+        default: gitUser.trim(),
+      };
+      return yield this.askQuestion(promptOps);
+    }, this);
+  },
 };
 
 // Tell the user what they should do next.
@@ -82,18 +97,23 @@ const getProjectDetails = async(function*(name = "") {
     repo = yield Prompts.askRepoName();
   }
 
-  // Let's get the name
+  // Let's get the name of the project
   if (!name) {
     name = yield Prompts.askProjectName(repo);
   }
+
+  // Derive the user's name from git config
+  const userName = yield Prompts.askUserName();
+
   console.info("\n");
   return {
     name,
     repo,
+    userName,
   };
 });
 
-const writeTemplates = async(function*({ repo, name }) {
+const writeTemplates = async(function*({ repo, name, userName }) {
   console.info(chalk.underline("CREATING TEMPLATES\n"));
   const dirFiles = yield fs.readdir(tmplDir);
   const destinations = dirFiles.map(
@@ -108,7 +128,8 @@ const writeTemplates = async(function*({ repo, name }) {
     const rawData = yield fs.readFile(from, "utf8");
     const data = rawData
       .replace(/{{name}}/g, name)
-      .replace(/{{repo}}/g, repo);
+      .replace(/{{repo}}/g, repo)
+      .replace(/{{userName}}/g, userName);
     try {
       yield fs.writeFile(to, data);
       console.log(`${g(" => Created")} ${gr(path.basename(to))}`);
