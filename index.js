@@ -10,6 +10,10 @@ const program = require("commander");
 const prompt = require("prompt");
 const tmplDir = __dirname + "/templates/";
 
+// Configure prompt
+prompt.message = " 👉 ";
+prompt.delimiter = "";
+
 // Colors + YOLO (WICG Logo)
 const { b, g, gr, r, y, YOLO } = require("./theme.js");
 
@@ -40,8 +44,6 @@ const Prompts = {
   askRepoName() {
     const promptOps = {
       description: "What will this Git repository be called?",
-      pattern: /[^\S]/,
-      message: "Space in the repository name are not great.",
       default: path.basename(process.cwd()),
     };
     return this.askQuestion(promptOps);
@@ -94,7 +96,8 @@ const getProjectDetails = async(function*(name = "") {
     repo = yield getRepoName();
     console.info(b("Repository:"), repo);
   } catch (err) {
-    repo = yield Prompts.askRepoName();
+    const response = yield Prompts.askRepoName();
+    repo = response.trim();
   }
 
   // Let's get the name of the project
@@ -149,6 +152,7 @@ readVersionNumber().then((version) => {
     .description("start a new incubation project")
     .action((name, options) => {
       console.info(YOLO);
+      console.info("Press ^C at any time to quit.")
       getProjectDetails(name, options)
         .then(writeTemplates)
         .then(postInitialization)
