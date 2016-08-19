@@ -40,8 +40,8 @@ const Prompts = {
   askRepoName() {
     const promptOps = {
       description: "What will this Git repository be called?",
-      pattern: "[^\s]",
-      message: "Spaces are pro",
+      pattern: /[^\S]/,
+      message: "Space in the repository name are not great.",
       default: path.basename(process.cwd()),
     };
     return this.askQuestion(promptOps);
