@@ -64,7 +64,7 @@ const Prompts = {
         gitUser = "";
       }
       const promptOps = {
-        description: "Who edits the spec (using your git user name)?",
+        description: "Who is the first editor of the spec?",
         default: gitUser.trim(),
       };
       return yield this.askQuestion(promptOps);
@@ -76,10 +76,13 @@ const Prompts = {
 const postInitialization = async(function*() {
   console.info(chalk.underline("NEXT STEPS"));
   console.info(`
-Congrats! you are ready to go. Please review the files that
-were just added to this directory.
+❤️ Congrats! you are ready to go. Please review the files that were
+just added to this directory.
 
-If you are new to spec writing, we strongly encourage you to read:
+If you are new to spec writing or the WICG, we strongly encourage you to read:
+
+  ⭐ Contributing New Proposals:
+    ${b("https://github.com/WICG/admin#contributing-new-proposals")}
 
   ⭐️ API Design Principles:
     ${b("https://w3ctag.github.io/design-principles/")}
@@ -87,6 +90,7 @@ If you are new to spec writing, we strongly encourage you to read:
   ⭐️ Writing Promise-Using Specs:
     ${b("http://www.w3.org/2001/tag/doc/promises-guide")}
 
+Good luck! 🐼
   `);
 });
 
@@ -152,7 +156,12 @@ readVersionNumber().then((version) => {
     .description("start a new incubation project")
     .action((name, options) => {
       console.info(YOLO);
-      console.info("Press ^C at any time to quit.")
+      console.info(`
+This utility creates the basic files you need to get started.
+It guesses sensible defaults based on your git setup.
+
+Press ^C at any time to quit.
+      `)
       getProjectDetails(name, options)
         .then(writeTemplates)
         .then(postInitialization)
@@ -163,7 +172,7 @@ readVersionNumber().then((version) => {
   if (!process.argv.slice(2).length) {
     program.outputHelp();
     console.log(`
-ℹ️ A tool that sets you up for writing WICG specs.
+ℹ️ A utility to get you started writing WICG specs.
 
   Example:
 
