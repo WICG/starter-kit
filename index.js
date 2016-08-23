@@ -17,7 +17,7 @@ prompt.delimiter = "";
 
 // Colors
 const { g, gr, r, y, heading } = require("./theme.js");
-
+const chk = g("✔");
 // Utility function to convert first letter to uppercase.
 function upperCaseFirstLetter(word) {
   if (typeof word !== "string") {
@@ -113,10 +113,10 @@ const Tasks = {
     return async.task(function*() {
       if (collectedData.needsGitInit) {
         const result = yield git("init");
-        console.info(g(` ✅ ${result.trim()}`));
+        console.info(g(` ${chk} ${result.trim()}`));
       }
       yield git.switchBranch(collectedData.mainBranch);
-      console.info(g(` ✅ switched to branch ${collectedData.mainBranch}`));
+      console.info(g(` ${chk} switched to branch ${collectedData.mainBranch}`));
       return collectedData;
     }, this);
   },
@@ -149,7 +149,7 @@ const Tasks = {
       for (let [from, to] of destinations) {
         const exists = yield fs.exists(to);
         if (exists) {
-          console.warn(`${y(" ⚠️ Skipping")} ${gr(path.basename(to))} (already exists)`);
+          console.warn(`${y(" ⚠️ skipping")} ${gr(path.basename(to))} (already exists)`);
           continue;
         }
         const rawData = yield fs.readFile(from, "utf8");
@@ -157,10 +157,10 @@ const Tasks = {
         try {
           yield fs.writeFile(to, data);
           const basename = path.basename(to);
-          console.log(`${g(" ✅ Created")} ${gr(basename)}`);
+          console.log(` ${chk} ${g("created")} ${gr(basename)}`);
           successFiles.push(basename);
         } catch (err) {
-          console.error(`${r(" => Error! ")} could not create ${gr(path.basename(to))}`);
+          console.error(` 💥 ${r("error: ")} could not create ${gr(path.basename(to))}`);
         }
       }
       if (successFiles.length) {
@@ -228,7 +228,7 @@ program
       .then(Tasks.performGitTasks.bind(Tasks))
       .then(Tasks.writeTemplates.bind(Tasks))
       .then(Tasks.postInitialization.bind(Tasks))
-      .catch(err => console.error(`\n${r(err.stack)}`));
+      .catch(err => console.error(`\n 💥 ${r(err.stack)}`));
   });
 
 program.parse(process.argv);
