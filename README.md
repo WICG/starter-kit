@@ -6,6 +6,6 @@ A simple starter kit for [WICG](https://wicg.io) specs.
 Simply type the following and follow the prompts:
 
 ```Bash
-npm install wicg
+npm install -g wicg
 wicg init "My Awesome API"
 ```
