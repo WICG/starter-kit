@@ -4,126 +4,30 @@
 const async = require("marcosc-async");
 const fs = require("fs-promise");
 const git = require("./git");
+const messages = require("./messages");
 const path = require("path");
 const program = require("commander");
-const prompt = require("prompt");
+const Prompts = require("./prompts");
 const tmplDir = __dirname + "/templates/";
 const { version } = require("./package.json");
-const messages = require("./messages");
-
-// Configure prompt
-prompt.message = " 👉 ";
-prompt.delimiter = "";
 
 // Colors
 const { g, gr, r, y, heading } = require("./theme.js");
 const chk = g("✔");
-// Utility function to convert first letter to uppercase.
-function upperCaseFirstLetter(word) {
-  if (typeof word !== "string") {
-    throw new TypeError("Expected string");
-  }
-  if (!word) {
-    return word;
-  }
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
-// User prompt tasks
-const Prompts = {
-  askQuestion(promptOps) {
-    return new Promise((resolve, reject) => {
-      prompt.get(promptOps, (err, res) => {
-        if (err) {
-          return reject(new Error(" 🙅 User canceled."));
-        }
-        resolve(res.question);
-      });
-    });
-  },
-  askRepoName() {
-    const promptOps = {
-      description: "Name of Git repository:",
-      default: path.basename(process.cwd()),
-    };
-    return this.askQuestion(promptOps);
-  },
-  askProjectName(repo) {
-    const promptOps = {
-      description: "Name of project:",
-      default: `The ${upperCaseFirstLetter(repo)} API`,
-    };
-    return this.askQuestion(promptOps);
-  },
-  askUserName() {
-    return async.task(function*() {
-      const user = yield git.getConfigData("config user.name");
-      const promptOps = {
-        description: "Name of Primary Editor of the spec:",
-        default: user.trim(),
-      };
-      return this.askQuestion(promptOps);
-    }, this);
-  },
-  askAffiliation(hint = "") {
-    const promptOps = {
-      description: `Company affiliation(e.g., ${upperCaseFirstLetter(hint) || "Monsters"} Inc.):`,
-      default: upperCaseFirstLetter(hint),
-    };
-    return this.askQuestion(promptOps);
-  },
-  askAffiliationURL(emailHint = "") {
-    const [, hint] = emailHint.match(/(?:@)(.+)/);
-    const promptOps = {
-      description: "Company URL:",
-    };
-    if (hint) {
-      promptOps.default = `https://${hint}`;
-    }
-    return this.askQuestion(promptOps);
-  },
-  askEmail() {
-    return async.task(function*() {
-      const email = yield git.getConfigData("config user.email");
-      const promptOps = {
-        description: "Email (optional):",
-        default: email.trim(),
-      };
-      return this.askQuestion(promptOps);
-    }, this);
-  },
-  askWhichGitBranch() {
-    const promptOps = {
-      description: "Main git branch for the spec:",
-      default: "gh-pages",
-      pattern: /^[\w\-]+$/,
-      message: "Name must be only letters and dashes",
-      before(value) {
-        return value.trim();
-      },
-    };
-    return this.askQuestion(promptOps);
-  },
-  askWhichPreProcessor() {
-    const promptOps = {
-      description: "Spec preprocessor (ReSpec or BikeShed):",
-      default: "ReSpec",
-      type: "string",
-      pattern: /^(respec|bikeshed|bs)$/i,
-      before(value) {
-        return value.trim().toLowerCase();
-      },
-    };
-    return this.askQuestion(promptOps);
-  },
-};
 
 const Tasks = {
   performGitTasks(collectedData) {
     console.info(heading("Performing git tasks"));
+    let newRepo = "";
+    if (collectedData.repo !== path.basename(process.cwd())) {
+      newRepo = collectedData.repo;
+    }
     return async.task(function*() {
       if (collectedData.needsGitInit) {
-        const result = yield git("init");
+        const result = yield git(`init ${newRepo}`);
+        if (newRepo) {
+          process.chdir(`${process.cwd()}/${newRepo}`);
+        }
         console.info(g(` ${chk} ${result.trim()}`));
       }
       yield git.switchBranch(collectedData.mainBranch);
@@ -148,9 +52,7 @@ const Tasks = {
       })
       .reduce((rawData, [key, value]) => rawData.replace(key, value), rawData);
   },
-  // Uses git to get the name of the repo (cwd)
-  writeTemplates(collectedData) {
-    console.info(heading("Creating Templates"));
+  getFilesToInclude(collectedData) {
     return async.task(function*() {
       const excludedFiles = new Set();
       switch (collectedData.preprocessor) {
@@ -162,14 +64,21 @@ const Tasks = {
           break;
       }
       const dirFiles = yield fs.readdir(tmplDir);
-      const destinations = dirFiles
+      return dirFiles
         .filter(
           filename => !excludedFiles.has(filename)
         )
         .map(
           filename => ([tmplDir + filename, `${process.cwd()}/${filename}`])
         );
-      const successFiles = [];
+    }, this);
+  },
+  // Uses git to get the name of the repo (cwd)
+  writeTemplates(collectedData) {
+    console.info(heading("Creating Templates"));
+    return async.task(function*() {
+      const destinations = yield this.getFilesToInclude(collectedData);
+      const successfulWrites = [];
       for (let [from, to] of destinations) {
         const exists = yield fs.exists(to);
         if (exists) {
@@ -182,13 +91,13 @@ const Tasks = {
           yield fs.writeFile(to, data);
           const basename = path.basename(to);
           console.log(` ${chk} ${g("created")} ${gr(basename)}`);
-          successFiles.push(basename);
+          successfulWrites.push(basename);
         } catch (err) {
           console.error(` 💥 ${r("error: ")} could not create ${gr(path.basename(to))}`);
         }
       }
-      if (successFiles.length) {
-        yield git(`add ${successFiles.join(" ")}`);
+      if (successfulWrites.length) {
+        yield git(`add ${successfulWrites.join(" ")}`);
         yield git(`commit -am "feat: add WICG files."`);
         console.info(g(`\nCommitted changes to "${collectedData.mainBranch}" branch.`));
       }
@@ -197,9 +106,7 @@ const Tasks = {
   },
   // Tell the user what they should do next.
   postInitialization() {
-    return async.task(function*() {
-      console.info(messages.finished);
-    }, this);
+    console.info(messages.finished);
   },
   collectProjectData(name = "") {
     console.info(heading("About this WICG project"));
@@ -254,7 +161,7 @@ program
       .then(Tasks.performGitTasks.bind(Tasks))
       .then(Tasks.writeTemplates.bind(Tasks))
       .then(Tasks.postInitialization.bind(Tasks))
-      .catch(err => console.error(`\n 💥 ${r(err.stack)}`));
+      .catch(err => console.error(`\n 💥 ${r(err.message)}`));
   });
 
 program.parse(process.argv);
