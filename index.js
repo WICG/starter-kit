@@ -59,32 +59,28 @@ const Prompts = {
     return async.task(function*() {
       const user = yield git.getConfigData("config user.name");
       const promptOps = {
-        description: "Primary Editor of the spec:",
+        description: "Name of Primary Editor of the spec:",
         default: user.trim(),
       };
-      return yield this.askQuestion(promptOps);
+      return this.askQuestion(promptOps);
     }, this);
   },
   askAffiliation(hint = "") {
-    return async.task(function*() {
-      const promptOps = {
-        description: `Company affiliation(e.g., ${upperCaseFirstLetter(hint) || "Monsters"} Inc.):`,
-        default: upperCaseFirstLetter(hint),
-      };
-      return yield this.askQuestion(promptOps);
-    }, this);
+    const promptOps = {
+      description: `Company affiliation(e.g., ${upperCaseFirstLetter(hint) || "Monsters"} Inc.):`,
+      default: upperCaseFirstLetter(hint),
+    };
+    return this.askQuestion(promptOps);
   },
   askAffiliationURL(emailHint = "") {
     const [, hint] = emailHint.match(/(?:@)(.+)/);
-    return async.task(function*() {
-      const promptOps = {
-        description: "Company URL:",
-      };
-      if (hint) {
-        promptOps.default = `https://${hint}`;
-      }
-      return yield this.askQuestion(promptOps);
-    }, this);
+    const promptOps = {
+      description: "Company URL:",
+    };
+    if (hint) {
+      promptOps.default = `https://${hint}`;
+    }
+    return this.askQuestion(promptOps);
   },
   askEmail() {
     return async.task(function*() {
@@ -93,18 +89,33 @@ const Prompts = {
         description: "Email (optional):",
         default: email.trim(),
       };
-      return yield this.askQuestion(promptOps);
+      return this.askQuestion(promptOps);
     }, this);
   },
   askWhichGitBranch() {
-    return async.task(function*() {
-      const promptOps = {
-        description: "Main git branch for the spec:",
-        default: "gh-pages",
-      };
-      return yield this.askQuestion(promptOps);
-    }, this);
-  }
+    const promptOps = {
+      description: "Main git branch for the spec:",
+      default: "gh-pages",
+      pattern: /^[\w\-]+$/,
+      message: "Name must be only letters and dashes",
+      before(value) {
+        return value.trim();
+      },
+    };
+    return this.askQuestion(promptOps);
+  },
+  askWhichPreProcessor() {
+    const promptOps = {
+      description: "Spec preprocessor (ReSpec or BikeShed):",
+      default: "ReSpec",
+      type: "string",
+      pattern: /^(respec|bikeshed|bs)$/i,
+      before(value) {
+        return value.trim().toLowerCase();
+      },
+    };
+    return this.askQuestion(promptOps);
+  },
 };
 
 const Tasks = {
@@ -141,10 +152,23 @@ const Tasks = {
   writeTemplates(collectedData) {
     console.info(heading("Creating Templates"));
     return async.task(function*() {
+      const excludedFiles = new Set();
+      switch (collectedData.preprocessor) {
+        case "bikeshed":
+          excludedFiles.add("index.html");
+          break;
+        case "respec":
+          excludedFiles.add("index.bs");
+          break;
+      }
       const dirFiles = yield fs.readdir(tmplDir);
-      const destinations = dirFiles.map(
-        filename => ([tmplDir + filename, `${process.cwd()}/${filename}`])
-      );
+      const destinations = dirFiles
+        .filter(
+          filename => !excludedFiles.has(filename)
+        )
+        .map(
+          filename => ([tmplDir + filename, `${process.cwd()}/${filename}`])
+        );
       const successFiles = [];
       for (let [from, to] of destinations) {
         const exists = yield fs.exists(to);
@@ -179,9 +203,9 @@ const Tasks = {
   },
   collectProjectData(name = "") {
     console.info(heading("About this WICG project"));
+    let repo = "";
+    let needsGitInit = true;
     return async.task(function*() {
-      let repo = "";
-      let needsGitInit = true;
       try {
         repo = yield git.getRepoName();
         needsGitInit = false;
@@ -204,12 +228,14 @@ const Tasks = {
         affiliationURL = yield Prompts.askAffiliationURL(userEmail);
       }
       const mainBranch = yield Prompts.askWhichGitBranch();
+      const preprocessor = yield Prompts.askWhichPreProcessor();
       return {
         affiliation,
         affiliationURL,
         mainBranch,
         name,
         needsGitInit,
+        preprocessor,
         repo,
         userEmail,
         userName,

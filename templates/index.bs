@@ -1,0 +1,16 @@
+<pre class='metadata'>
+Title: {{name}}
+Shortname: {{repo}}
+Level: 1
+Status: CG-DRAFT
+Group: WICG
+Issue Tracking: https://www.github.com/WICG/{{repo}}/issues/
+URL: http://example.com/url-this-spec-will-live-at
+Editor: {{userName}}, {{affiliation}} {{affiliationURL}}, {{userEmail}}
+Abstract: A short description of your spec, one or two sentences.
+</pre>
+
+Introduction {#intro}
+=====================
+
+See https://github.com/tabatkins/bikeshed to get started.
