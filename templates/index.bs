@@ -4,7 +4,7 @@ Shortname: {{repo}}
 Level: 1
 Status: CG-DRAFT
 Group: WICG
-Issue Tracking: https://www.github.com/WICG/{{repo}}/issues/
+Repository: WICG/{{repo}}
 URL: http://example.com/url-this-spec-will-live-at
 Editor: {{userName}}, {{affiliation}} {{affiliationURL}}, {{userEmail}}
 Abstract: A short description of your spec, one or two sentences.
