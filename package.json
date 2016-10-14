@@ -23,8 +23,9 @@
     "url": "https://github.com/WICG/starter-kit/issues"
   },
   "preferGlobal": true,
+  "engineStrict": true,
   "engines": {
-    "node": ">= 6"
+    "node": ">=6"
   },
   "homepage": "https://github.com/WICG/starter-kit#readme",
   "dependencies": {
