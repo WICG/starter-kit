@@ -1,4 +1,6 @@
 # starter-kit
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/WICG/starter-kit.svg)](https://greenkeeper.io/)
 A simple starter kit for [WICG](https://wicg.io) specs.
 
 ## Install
