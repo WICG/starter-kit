@@ -1,6 +1,6 @@
 {
-  "src_file": "index.bs",
-  "type": "bikeshed",
+  "src_file": "{{srcfile}}",
+  "type": "{{preprocessor}}",
   "params": {
     "force": 1
   }
