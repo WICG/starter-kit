@@ -143,6 +143,7 @@ async function collectProjectData(name = "") {
     needsGitInit,
     preprocessor,
     repo,
+    srcfile: preprocessor === "bikeshed" ? "index.bs" : "index.html",
     userEmail,
     userName,
   };
