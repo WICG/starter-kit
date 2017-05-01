@@ -1,16 +1,17 @@
 {
   "name": "wicg",
-  "version": "1.1.1",
+  "version": "0.0.0-development",
   "description": "Tools to get you started with the WICG",
   "scripts": {
-    "release": "standard-version"
+    "release": "standard-version",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "bin": {
     "wicg": "index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WICG/starter-kit.git"
+    "url": "https://github.com/WICG/starter-kit.git"
   },
   "keywords": [
     "WICG",
@@ -36,6 +37,7 @@
     "prompt": "^1.0.0"
   },
   "devDependencies": {
-    "standard-version": "^2.4.0"
+    "standard-version": "^2.4.0",
+    "semantic-release": "^6.3.2"
   }
 }
