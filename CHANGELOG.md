@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/WICG/starter-kit/compare/v1.2.0...v1.2.1) (2017-05-01)
+
+
+### Bug Fixes
+
+* **index:** forgot to pass data around ([9b7b8c0](https://github.com/WICG/starter-kit/commit/9b7b8c0))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/WICG/starter-kit/compare/v1.1.1...v1.2.0) (2017-05-01)
 
