@@ -29,7 +29,6 @@ async function performGitTasks(collectedData) {
   }
   await git.switchBranch(collectedData.mainBranch);
   console.info(g(` ${chk} switched to branch ${collectedData.mainBranch}`));
-  return collectedData;
 }
 
 function populateTemplate(rawData, collectedData, file) {
@@ -156,13 +155,13 @@ program
   .action(async (name, options) => {
     console.info(messages.logo);
     try {
-      await collectProjectData(name, options);
-      await performGitTasks();
-      await writeTemplates();
-      await postInitialization();
+      const collectedData = await collectProjectData(name, options);
+      await performGitTasks(collectedData);
+      await writeTemplates(collectedData);
     } catch (err) {
       console.error(`\n 💥 ${r(err.message)}`);
     }
+    postInitialization();
   });
 
 program.parse(process.argv);
