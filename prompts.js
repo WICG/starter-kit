@@ -1,5 +1,4 @@
 "use strict";
-const async = require("marcosc-async");
 const git = require("./git");
 const path = require("path");
 const prompt = require("prompt");
@@ -36,7 +35,7 @@ const Prompts = {
       description: "Name of Git repository:",
       default: path.basename(process.cwd()),
       type: "string",
-      before(value){
+      before(value) {
         return value.trim();
       },
     };
@@ -47,32 +46,30 @@ const Prompts = {
       description: "Name of project:",
       default: `The ${upperCaseFirstLetter(repo)} API`,
       type: "string",
-      before(value){
+      before(value) {
         return value.trim();
       },
     };
     return this.askQuestion(promptOps);
   },
-  askUserName() {
-    return async.task(function*() {
-      const user = yield git.getConfigData("config user.name");
-      const promptOps = {
-        description: "Name of Primary Editor of the spec:",
-        default: user.trim(),
-        type: "string",
-        before(value){
-          return value.trim();
-        },
-      };
-      return this.askQuestion(promptOps);
-    }, this);
+  async askUserName() {
+    const user = await git.getConfigData("config user.name");
+    const promptOps = {
+      description: "Name of Primary Editor of the spec:",
+      default: user.trim(),
+      type: "string",
+      before(value) {
+        return value.trim();
+      },
+    };
+    return this.askQuestion(promptOps);
   },
   askAffiliation(hint = "") {
     const promptOps = {
       description: `Company affiliation(e.g., ${upperCaseFirstLetter(hint) || "Monsters"} Inc.):`,
       default: upperCaseFirstLetter(hint),
       type: "string",
-      before(value){
+      before(value) {
         return value.trim();
       },
     };
@@ -83,7 +80,7 @@ const Prompts = {
     const promptOps = {
       description: "Company URL:",
       type: "string",
-      before(value){
+      before(value) {
         return value.trim();
       },
     };
@@ -92,16 +89,14 @@ const Prompts = {
     }
     return this.askQuestion(promptOps);
   },
-  askEmail() {
-    return async.task(function*() {
-      const email = yield git.getConfigData("config user.email");
-      const promptOps = {
-        description: "Email (optional):",
-        default: email.trim(),
-        type: "string",
-      };
-      return this.askQuestion(promptOps);
-    }, this);
+  async askEmail() {
+    const email = await git.getConfigData("config user.email");
+    const promptOps = {
+      description: "Email (optional):",
+      default: email.trim(),
+      type: "string",
+    };
+    return this.askQuestion(promptOps);
   },
   askWhichGitBranch() {
     const promptOps = {
@@ -131,3 +126,4 @@ const Prompts = {
 };
 
 module.exports = Prompts;
+
