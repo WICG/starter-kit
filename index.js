@@ -109,7 +109,7 @@ function postInitialization() {
 }
 
 async function collectProjectData(name = "") {
-  console.info(heading("About this WICG project"));
+  console.info(heading("Let's get you set up! (About this WICG project)"));
   let repo = "";
   let needsGitInit = true;
   try {
