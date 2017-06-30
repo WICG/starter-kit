@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/WICG/starter-kit#readme",
   "dependencies": {
-    "chalk": "^1.1.3",
+    "chalk": "^2.0.0",
     "commander": "^2.9.0",
     "fs-promise": "^2.0.2",
     "prompt": "^1.0.0"
