@@ -7,6 +7,7 @@ Group: WICG
 Repository: WICG/{{repo}}
 URL: http://example.com/url-this-spec-will-live-at
 Editor: {{userName}}, {{affiliation}} {{affiliationURL}}, {{userEmail}}
+!Tests: <a href=https://github.com/w3c/web-platform-tests/tree/master/{{repo}}>web-platform-tests {{repo}}/</a> (<a href=https://github.com/w3c/web-platform-tests/labels/{{repo}}>ongoing work</a>)
 Abstract: A short description of your spec, one or two sentences.
 </pre>
 
