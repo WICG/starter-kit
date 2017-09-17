@@ -36,7 +36,7 @@
     "prompt": "^1.0.0"
   },
   "devDependencies": {
-    "semantic-release": "^7.0.1",
+    "semantic-release": "^8.0.0",
     "standard-version": "^4.0.0"
   }
 }
