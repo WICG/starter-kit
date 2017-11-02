@@ -26,7 +26,7 @@
   "preferGlobal": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=7"
+    "node": ">=8"
   },
   "homepage": "https://github.com/WICG/starter-kit#readme",
   "dependencies": {
