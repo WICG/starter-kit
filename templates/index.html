@@ -4,16 +4,12 @@
 <head>
   <meta charset="utf-8">
   <title>{{name}}</title>
-  <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
   <script class='remove'>
   "use strict";
   // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
   var respecConfig = {
-    "doRDFa": false,
-    "format": "markdown",
-    "githubAPI": "https://api.github.com/repos/WICG/{{repo}}",
-    "issueBase": "https://www.github.com/WICG/{{repo}}/issues/",
-    "noLegacyStyle": true,
+    "githubAPI": "WICG/{{repo}}",
     "editors": [{
         name: "{{userName}}",
         email: "{{userEmail}}",
@@ -25,21 +21,7 @@
     ],
     "shortName": "{{repo}}",
     "specStatus": "CG-DRAFT",
-    "subjectPrefix": "[{{repo}}]",
     "wg": "WICG",
-    "otherLinks": [{
-      "key": "Repository",
-      "data": [{
-        "value": "We are on Github.",
-        "href": "https://github.com/WICG/{{repo}}"
-      }, {
-        "value": "File a bug.",
-        "href": "https://github.com/WICG/{{repo}}/issues"
-      }, {
-        "value": "Commit history.",
-        "href": "https://github.com/WICG/{{repo}}/commits/{{mainBranch}}"
-      }, ]
-    }],
   };
   </script>
 </head>
