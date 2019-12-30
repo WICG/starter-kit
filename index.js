@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-"use strict";
-const fs = require("fs-promise");
+const fs = require("fs").promises;
 const git = require("./git");
 const messages = require("./messages");
 const path = require("path");
@@ -72,7 +71,13 @@ async function writeTemplates(collectedData) {
   const destinations = await getFilesToInclude(collectedData);
   const successfulWrites = [];
   for (let [from, to] of destinations) {
-    const exists = await fs.exists(to);
+    let exists = true;
+    try {
+      await fs.access(to);
+    } catch (err) {
+      if (err.code !== 'ENOENT') throw new Error("Unexpected error.");
+      exists = false;
+    }
     if (exists) {
       console.warn(
         `${y(" ⚠️ skipping")} ${gr(path.basename(to))} (already exists)`
