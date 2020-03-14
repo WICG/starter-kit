@@ -1,13 +1,13 @@
 <pre class='metadata'>
-Title: {{name}}
-Shortname: {{repo}}
+Title: TITLE-GOES-HERE
+Shortname: SHORTNAME-SLASH-REPO-NAME-GOES-HERE
 Level: 1
 Status: CG-DRAFT
 Group: WICG
-Repository: WICG/{{repo}}
+Repository: WICG/REPO-NAME-GOES-HERE
 URL: http://example.com/url-this-spec-will-live-at
-Editor: {{userName}}, {{affiliation}} {{affiliationURL}}, {{userEmail}}
-!Tests: <a href=https://github.com/w3c/web-platform-tests/tree/master/{{repo}}>web-platform-tests {{repo}}/</a> (<a href=https://github.com/w3c/web-platform-tests/labels/{{repo}}>ongoing work</a>)
+Editor: YOUR-NAME, YOUR-COMPANY OPTIONAL-COMPANY-URL, OPTIONAL-YOUR-EMAIL
+!Tests: <a href=https://github.com/w3c/web-platform-tests/tree/master/REPO-NAME-GOES-HERE>web-platform-tests REPO-NAME-GOES-HERE/</a> (<a href=https://github.com/w3c/web-platform-tests/labels/REPO-NAME-GOES-HERE>ongoing work</a>)
 Abstract: A short description of your spec, one or two sentences.
 </pre>
 
