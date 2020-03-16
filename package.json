@@ -31,7 +31,7 @@
   "homepage": "https://github.com/WICG/starter-kit#readme",
   "dependencies": {
     "chalk": "^3.0.0",
-    "commander": "^4.0.0",
+    "commander": "^5.0.0",
     "fs-promise": "^2.0.2",
     "prompt": "^1.0.0"
   },
