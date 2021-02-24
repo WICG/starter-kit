@@ -30,13 +30,12 @@
   },
   "homepage": "https://github.com/WICG/starter-kit#readme",
   "dependencies": {
-    "chalk": "^4.0.0",
-    "commander": "^5.0.0",
-    "fs-promise": "^2.0.2",
-    "prompt": "^1.0.0"
+    "chalk": "^4.1.0",
+    "commander": "^7.1.0",
+    "prompt": "^1.1.0"
   },
   "devDependencies": {
-    "semantic-release": "^17.0.3",
-    "standard-version": "^8.0.1"
+    "semantic-release": "^17.3.9",
+    "standard-version": "^9.1.1"
   }
 }
