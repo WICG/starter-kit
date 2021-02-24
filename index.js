@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 "use strict";
-const fs = require("fs-promise");
+const fs = require("fs").promises;
 const git = require("./git");
 const messages = require("./messages");
 const path = require("path");
@@ -34,10 +34,10 @@ async function performGitTasks(collectedData) {
 function populateTemplate(rawData, collectedData, file) {
   // find all {{\w}} and replace them form collectedData
   const replaceSet = (rawData.match(/{{\w+}}/gm) || [])
-    .map(match => match.replace(/[{{|}}]/g, ""))
+    .map((match) => match.replace(/[{{|}}]/g, ""))
     .reduce((collector, match) => collector.add(match), new Set());
   return Array.from(replaceSet)
-    .map(match => {
+    .map((match) => {
       const key = new RegExp(`{{${match}}}`, "gm");
       if (!collectedData[match]) {
         console.warn(
@@ -62,8 +62,17 @@ async function getFilesToInclude(collectedData) {
   }
   const dirFiles = await fs.readdir(tmplDir);
   return dirFiles
-    .filter(filename => !excludedFiles.has(filename))
-    .map(filename => [tmplDir + filename, `${process.cwd()}/${filename}`]);
+    .filter((filename) => !excludedFiles.has(filename))
+    .map((filename) => [tmplDir + filename, `${process.cwd()}/${filename}`]);
+}
+
+async function fileExists(filePath) {
+  try {
+    await fs.access(filePath, fs.F_OK);
+  } catch (err) {
+    return false;
+  }
+  return true;
 }
 
 // Uses git to get the name of the repo (cwd)
@@ -72,8 +81,7 @@ async function writeTemplates(collectedData) {
   const destinations = await getFilesToInclude(collectedData);
   const successfulWrites = [];
   for (let [from, to] of destinations) {
-    const exists = await fs.exists(to);
-    if (exists) {
+    if (await fileExists(to)) {
       console.warn(
         `${y(" ⚠️ skipping")} ${gr(path.basename(to))} (already exists)`
       );
