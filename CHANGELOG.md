@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.5](https://github.com/WICG/starter-kit/compare/v1.2.1...v1.2.5) (2021-09-21)
+
+
+### Bug Fixes
+
+* **package:** update chalk to version 2.0.0 ([#9](https://github.com/WICG/starter-kit/issues/9)) ([d86d6ca](https://github.com/WICG/starter-kit/commit/d86d6cad9e0f462fec627610c3fdc887582da602))
+* **package:** update chalk to version 3.0.0 ([#46](https://github.com/WICG/starter-kit/issues/46)) ([dc0854a](https://github.com/WICG/starter-kit/commit/dc0854a3923b4cf676036f0f2d1e7b415ac1dcc9))
+* **package:** update chalk to version 4.0.0 ([#53](https://github.com/WICG/starter-kit/issues/53)) ([262b8b5](https://github.com/WICG/starter-kit/commit/262b8b5fbba625aa45ecd207b103e89b4c5359ed))
+* **package:** update commander to version 3.0.0 ([#44](https://github.com/WICG/starter-kit/issues/44)) ([dab9eeb](https://github.com/WICG/starter-kit/commit/dab9eebc0187bf11b1cc940e37ab3cb7420dd6c4))
+* **package:** update commander to version 4.0.0 ([#45](https://github.com/WICG/starter-kit/issues/45)) ([03a9f08](https://github.com/WICG/starter-kit/commit/03a9f084e120cf245bc7881070d2530e2f18fd85))
+* **package:** update commander to version 5.0.0 ([#51](https://github.com/WICG/starter-kit/issues/51)) ([b0ba179](https://github.com/WICG/starter-kit/commit/b0ba179f8778eb0551193c6f3b99b5b96e4756f7))
+
 ### [1.2.3](https://github.com/WICG/starter-kit/compare/v1.2.1...v1.2.3) (2021-09-21)
 
 
