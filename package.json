@@ -1,6 +1,6 @@
 {
   "name": "wicg",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Tools to get you started with the WICG",
   "scripts": {
     "release": "standard-version",
@@ -30,12 +30,12 @@
   },
   "homepage": "https://github.com/WICG/starter-kit#readme",
   "dependencies": {
-    "chalk": "^4.1.2",
-    "commander": "^8.2.0",
-    "prompt": "^1.2.0"
+    "chalk": "^5.0.0",
+    "commander": "^8.3.0",
+    "prompt": "^1.2.1"
   },
   "devDependencies": {
-    "semantic-release": "^18.0.0",
-    "standard-version": "^9.3.1"
+    "semantic-release": "^19.0.2",
+    "standard-version": "^9.3.2"
   }
 }

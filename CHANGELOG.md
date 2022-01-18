@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.6](https://github.com/WICG/starter-kit/compare/v1.2.5...v1.2.6) (2022-01-18)
+
 ### [1.2.5](https://github.com/WICG/starter-kit/compare/v1.2.1...v1.2.5) (2021-09-21)
 
 
