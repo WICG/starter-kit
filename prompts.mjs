@@ -1,7 +1,7 @@
 "use strict";
-const git = require("./git");
-const path = require("path");
-const prompt = require("prompt");
+import { git } from "./git.mjs";
+import path from "path";
+import prompt from "prompt";
 
 // Configure prompt
 prompt.message = " 👉 ";
@@ -19,7 +19,7 @@ function upperCaseFirstLetter(word) {
 }
 
 // User prompt tasks
-const Prompts = {
+export const Prompts = {
   askQuestion(promptOps) {
     return new Promise((resolve, reject) => {
       prompt.get(promptOps, (err, res) => {
@@ -66,7 +66,9 @@ const Prompts = {
   },
   askAffiliation(hint = "") {
     const promptOps = {
-      description: `Company affiliation(e.g., ${upperCaseFirstLetter(hint) || "Monsters"} Inc.):`,
+      description: `Company affiliation(e.g., ${
+        upperCaseFirstLetter(hint) || "Monsters"
+      } Inc.):`,
       default: upperCaseFirstLetter(hint),
       type: "string",
       before(value) {
@@ -101,7 +103,7 @@ const Prompts = {
   askWhichGitBranch() {
     const promptOps = {
       description: "Main git branch for the spec:",
-      default: "gh-pages",
+      default: "main",
       pattern: /^[\w\-]+$/,
       type: "string",
       message: "Name must be only letters and dashes",
@@ -113,8 +115,8 @@ const Prompts = {
   },
   askWhichPreProcessor() {
     const promptOps = {
-      description: "Spec preprocessor (ReSpec or BikeShed):",
-      default: "ReSpec",
+      description: "Spec preprocessor (respec or bikeshed):",
+      default: "respec",
       type: "string",
       pattern: /^(respec|bikeshed|bs)$/i,
       before(value) {
@@ -124,6 +126,3 @@ const Prompts = {
     return this.askQuestion(promptOps);
   },
 };
-
-module.exports = Prompts;
-

@@ -1,10 +1,9 @@
-"use strict";
-const chalk = require("chalk");
-const { b, g, gr, r, y, m } = require("./theme.js");
+const chalk = await import("chalk");
+const { b, g, gr, r, y, m } = await import("./theme.mjs");
 
 // Shown if everything is successful
-const finished = `
-${chalk.underline("NEXT STEPS")}
+export const finished = `
+${chalk.default.underline("NEXT STEPS")}
 
 Congrats! You are ready to start. Please push everything up to GitHub
 when you are ready.
@@ -25,10 +24,10 @@ If you are new to spec writing or the WICG, we strongly encourage you to read:
 Good luck! 🐼
 `;
 
-const wicgURL = chalk.blue.underline.bold("https//wicg.io");
-const wicgTitle = chalk.yellow("Web Incubator Community Group");
+const wicgURL = chalk.default.blue.underline.bold("https//wicg.io");
+const wicgTitle = chalk.default.yellow("Web Incubator Community Group");
 const W3C = `${gr(">--=")} ${b("W")} * ${gr("3")} * ${b("C")} ${gr("=--<")}`;
-const logo = `
+export const logo = `
     ${y(" __      __")}${r(".___")}${m("_________")}${g("   ________")}        ${W3C}
     ${y("/  \\    /  \\")}${r("   \\")}${m("_   ___ \\")}${g(" /  _____/")}
     ${y("\\   \\/\\/   /")}${r("   /")}${m("    \\  \\/")}${g("/   \\  ___")}   ${wicgTitle}
@@ -42,7 +41,7 @@ It guesses sensible defaults based on your git setup.
 Press ^C at any time to quit.
 `;
 
-const example = `
+export const example = `
 ℹ️ A utility to get you started writing WICG specs.
 
 Example:
@@ -51,9 +50,3 @@ Example:
 
 More info at: ${b("https://wicg.io")} | bugs: ${b("https://github.com/WICG/starter-kit")}
 `;
-
-module.exports = {
-  example,
-  finished,
-  logo,
-};
