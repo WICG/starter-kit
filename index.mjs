@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 
-"use strict";
-const fs = require("fs").promises;
-const git = require("./git");
-const messages = require("./messages");
-const path = require("path");
-const program = require("commander");
-const Prompts = require("./prompts");
+import { promises as fs } from "fs";
+import { git } from "./git.mjs";
+import { finished, logo, example } from "./messages.mjs";
+import path from "path";
+import { program } from "commander";
+import { Prompts } from "./prompts.mjs";
+import pkg from "./package.json" assert { type: "json" };
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const version = pkg.version;
 const tmplDir = __dirname + "/templates/";
-const { version } = require("./package.json");
 
 // Colors
-const { g, gr, r, y, heading } = require("./theme.js");
+const { g, gr, r, y, heading } = await import("./theme.mjs");
 const chk = g("✔");
 
 async function performGitTasks(collectedData) {
@@ -112,7 +115,7 @@ async function writeTemplates(collectedData) {
 
 // Tell the user what they should do next.
 function postInitialization() {
-  console.info(messages.finished);
+  console.info(finished);
 }
 
 async function collectProjectData(name = "") {
@@ -161,13 +164,13 @@ program
   .command("init [name]")
   .description("start a new incubation project")
   .action(async (name, options) => {
-    console.info(messages.logo);
+    console.info(logo);
     try {
       const collectedData = await collectProjectData(name, options);
       await performGitTasks(collectedData);
       await writeTemplates(collectedData);
     } catch (err) {
-      console.error(`\n 💥 ${r(err.message)}`);
+      console.error(`\n 💥 ${r(err.message)}`, err);
     }
     postInitialization();
   });
@@ -176,5 +179,5 @@ program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
   program.outputHelp();
-  console.log(messages.example);
+  console.log(example);
 }
