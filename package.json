@@ -1,6 +1,6 @@
 {
   "name": "wicg",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Tools to get you started with the WICG",
   "scripts": {
     "release": "standard-version",
