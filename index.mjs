@@ -6,7 +6,7 @@ import { finished, logo, example } from "./messages.mjs";
 import path from "path";
 import { program } from "commander";
 import { Prompts } from "./prompts.mjs";
-import pkg from "./package.json" assert { type: "json" };
+import pkg from "./package.json" with { type: "json" };
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
